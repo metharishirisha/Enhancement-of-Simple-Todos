@@ -23,7 +23,6 @@ class SimpleTodos extends Component {
       {id: 8, title: 'Get essentials for Sunday car wash', completed: false},
     ],
     newTodoTitle: '',
-    newTodoCount: 1,
   }
 
   handleAddTodo = () => {
@@ -78,8 +77,16 @@ class SimpleTodos extends Component {
     this.setState({todosList: updatedTodoList})
   }
 
+  updateTodoTitle = (id, newTitle) => {
+    this.setState(prevState => ({
+      todosList: prevState.todosList.map(todo =>
+        todo.id === id ? {...todo, title: newTitle} : todo,
+      ),
+    }))
+  }
+
   render() {
-    const {todosList, newTodoTitle, newTodoCount} = this.state
+    const {todosList, newTodoTitle} = this.state
     return (
       <div className="container">
         <div className="inner-container">
@@ -90,14 +97,7 @@ class SimpleTodos extends Component {
               name="newTodoTitle"
               value={newTodoTitle}
               onChange={this.handleChange}
-              placeholder="Enter todo title"
-            />
-            <input
-              type="number"
-              name="newTodoCount"
-              value={newTodoCount}
-              onChange={this.handleChange}
-              placeholder="Enter number of todos"
+              placeholder="Enter todo title and number (e.g., Buy milk 3)"
             />
             <button onClick={this.handleAddTodo} type="button">
               Add
@@ -110,6 +110,7 @@ class SimpleTodos extends Component {
                 todoDetails={todo}
                 deleteTodo={this.deleteTodo}
                 toggleComplete={this.toggleComplete}
+                updateTodoTitle={this.updateTodoTitle}
               />
             ))}
           </ul>
